@@ -24,7 +24,7 @@ project('FFmpeg', 'c',
 
 # HOWTO:
 #
-# Get meson >= 0.50 from pip or your distro's package manager then:
+# Get meson >= 0.59 from pip or your distro's package manager then:
 #
 # meson build && ninja -C build
 #
@@ -1839,7 +1839,8 @@ foreach extern_thing : extern_things
   list = result.stdout().strip().split('\n')
 
   foreach elem : list
-    conf.set(elem, get_option(elem).enabled().to_int())
+    elem_disabled = get_option(elem).disabled()
+    conf.set(elem, (not elem_disabled).to_int())
   endforeach
 
   set_variable(variable_name, list)
@@ -1852,7 +1853,8 @@ assert(result.returncode() == 0, 'Could not extract filter list!')
 filter_list = result.stdout().strip().split('\n')
 
 foreach filter : filter_list
-  conf.set(filter, get_option(filter).enabled().to_int())
+  filter_disabled = get_option(filter).disabled()
+  conf.set(filter, (not filter_disabled).to_int())
 endforeach
 
 foreach program : program_list
