@@ -1430,7 +1430,7 @@ foreach license : license_list
 endforeach
 
 foreach lib : library_list
-  conf.set(lib, 1)
+  conf.set(lib, get_option(lib).enabled().to_int())
 endforeach
 
 arch = 'c'
@@ -1853,7 +1853,7 @@ foreach filter : filter_list
 endforeach
 
 foreach program : program_list
-  conf.set(program, 1)
+  conf.set(program, (not get_option(program).disabled()).to_int())
 endforeach
 
 result = run_command(find_things, '--full', files('libavfilter/allfilters.c'))
